@@ -41,7 +41,7 @@ const Products = () => {
               <p className="font-bold">${product.price}</p>
             </Link>
             <button
-              className="border border-solid border-black rounded-xl text-s pr-3 pl-3 font-bold mb-3"
+              className="border border-solid border-black rounded-xl text-s pr-3 pl-3 font-bold mb-3 active:bg-black active:text-white"
               onClick={() => addToCart(product)}
             >
               Add to cart

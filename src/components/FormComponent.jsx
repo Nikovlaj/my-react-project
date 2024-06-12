@@ -18,6 +18,12 @@ const FormComponent = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(`Paket skickat till ${formData.name} på ${formData.address}`);
+
+    setFormData({
+      name: "",
+      address: "",
+      email: "",
+    });
   };
 
   return (
