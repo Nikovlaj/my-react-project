@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import { useShop } from "./Shopcontext";
 import { useParams } from "react-router-dom";
-import { addToCart, removeFromCart } from "./Shopcontext";
 
 const Productpage = () => {
   const { id } = useParams();
-  console.log("id från url:", id);
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { addToCart, removeFromCart } = useShop();
+  const { addToCart, removeFromCart, cart } = useShop();
   const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
@@ -19,7 +17,6 @@ const Productpage = () => {
         setProduct(data);
         setLoading(false);
       })
-
       .catch((error) => {
         setError(error);
         setLoading(false);
@@ -27,12 +24,20 @@ const Productpage = () => {
       });
   }, [id]);
 
-  const handleToAddcart = () => {
-    for (let i = 0; i < quantity; i++) {
-      addToCart(product.id);
+  useEffect(() => {
+    const cartItem = cart.find((item) => item.id === product.id);
+    if (cartItem) {
+      setQuantity(cartItem.quantity);
+    } else {
+      setQuantity(0);
     }
+  }, [cart, product.id]);
+
+  const handleAddToCart = () => {
+    addToCart(product);
   };
-  const handleRemoveFromcart = () => {
+
+  const handleRemoveFromCart = () => {
     removeFromCart(product.id);
   };
 
@@ -45,7 +50,7 @@ const Productpage = () => {
   return (
     <div className="flex align-center justify-center">
       <div key={id} className="border border-solid mt-9">
-        <div className="">
+        <div>
           <img src={product.thumbnail} alt={product.title}></img>
         </div>
         <div className="flex align-center">
@@ -59,20 +64,16 @@ const Productpage = () => {
               <div className="mt-5">
                 <button
                   className="mr-2 font-bold"
-                  onClick={() => removeFromCart(product.id)}
+                  onClick={handleRemoveFromCart}
                 >
                   -
                 </button>
                 <input
-                  className="border border-solid border-black mb-2 w-10 h-5 pl-3 "
+                  className="border border-solid border-black mb-2 w-10 h-5 pl-3"
                   readOnly
-                  value={product.quantity}
+                  value={quantity}
                 />
-
-                <button
-                  className="ml-2 font-bold"
-                  onClick={() => addToCart(product)}
-                >
+                <button className="ml-2 font-bold" onClick={handleAddToCart}>
                   +
                 </button>
               </div>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useShop } from "./Shopcontext";
 
 const FormComponent = () => {
   const [formData, setFormData] = useState({
@@ -6,6 +7,7 @@ const FormComponent = () => {
     address: "",
     email: "",
   });
+  const { clearCart } = useShop();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,6 +26,8 @@ const FormComponent = () => {
       address: "",
       email: "",
     });
+
+    clearCart();
   };
 
   return (

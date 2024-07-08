@@ -13,7 +13,7 @@ const Cart = () => {
       total += product.price * product.quantity;
     });
     setPrice(total);
-  });
+  }, [cart]);
   return (
     <div>
       <div className=" flex justify-center align center">
